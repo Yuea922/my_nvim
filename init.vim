@@ -38,7 +38,7 @@ set relativenumber
 set cursorline
 set hidden
 set noexpandtab
-set tabstop=4
+set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set autoindent
@@ -429,14 +429,14 @@ Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] 
 Plug 'dkarter/bullets.vim'
 
 " Editor Enhancement
-" Plug 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs'
 " Plug 'mg979/vim-visual-multi'
 " Plug 'tomtom/tcomment_vim' " in <space>cn to comment a line
 Plug 'theniceboy/antovim' " gs to switch
 Plug 'tpope/vim-surround' " type ysiw' to wrap the word with '' or type cs'` to change 'word' to `word`
 Plug 'gcmt/wildfire.vim' " in Visual mode, type k' to select all text in '', or type k) k] k} kp
 Plug 'junegunn/vim-after-object' " da= to delete what's after =
-" Plug 'godlygeek/tabular' " ga, or :Tabularize <regex> to align
+Plug 'godlygeek/tabular' " ga, or :Tabularize <regex> to align
 " Plug 'tpope/vim-capslock'	" Ctrl+L (insert) to toggle capslock
 " Plug 'easymotion/vim-easymotion'
 " Plug 'Konfekt/FastFold'
@@ -464,10 +464,16 @@ Plug 'mhinz/vim-startify'
 Plug 'itchyny/calendar.vim'
 
 " Other visual enhancement
-" Plug 'luochen1990/rainbow'
-" Plug 'mg979/vim-xtabline'
-" Plug 'ryanoasis/vim-devicons'
+Plug 'luochen1990/rainbow'
+Plug 'mg979/vim-xtabline'
+Plug 'ryanoasis/vim-devicons'
 " Plug 'wincent/terminus'
+
+" file type from context
+" Plug 'Shougo/context_filetype.vim'
+" auto comment
+" Plug 'tyru/caw.vim'
+Plug 'tomtom/tcomment_vim' " in <space>cn to comment a line
 
 " Other useful utilities
 " Plug 'lambdalisue/suda.vim' " do stuff like :sudowrite
@@ -537,6 +543,7 @@ nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 " === coc.nvim
 " ===
 let g:coc_global_extensions = [
+	\ 'coc-cmake',
 	\ 'coc-css',
 	\ 'coc-diagnostic',
 	\ 'coc-docker',
@@ -565,7 +572,6 @@ let g:coc_global_extensions = [
 	\ 'coc-vetur',
 	\ 'coc-vimlsp',
 	\ 'coc-yaml',
-	\ 'coc-yank',
 	\ 'https://github.com/rodrigore/coc-tailwind-intellisense']
 inoremap <silent><expr> <TAB>
 	\ pumvisible() ? "\<C-n>" :
@@ -587,11 +593,7 @@ function! Show_documentation()
 		call CocAction('doHover')
 	endif
 endfunction
-nnoremap <LEADER>h :call Show_documentation()<CR>
-" set runtimepath^=~/.config/nvim/coc-extensions/coc-flutter-tools/
-" let g:coc_node_args = ['--nolazy', '--inspect-brk=6045']
-" let $NVIM_COC_LOG_LEVEL = 'debug'
-" let $NVIM_COC_LOG_FILE = '/Users/david/Desktop/log.txt'
+nnoremap <LEADER>sd :call Show_documentation()<CR>
 
 nnoremap <silent><nowait> <LEADER>d :CocList diagnostics<cr>
 nmap <silent> <LEADER>- <Plug>(coc-diagnostic-prev)
@@ -606,13 +608,15 @@ xmap ic <Plug>(coc-classobj-i)
 omap ic <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gD sl<Plug>(coc-definition)
+
 " Useful commands
 nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gD :tab sp<CR><Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-" nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
 nmap <leader>rn <Plug>(coc-rename)
 nmap tt :CocCommand explorer<CR>
 " coc-translator
@@ -631,12 +635,25 @@ nmap <leader>aw  <Plug>(coc-codeaction-selected)w
 noremap <silent> <leader>ts :CocList tasks<CR>
 " coc-snippets
 imap <C-l> <Plug>(coc-snippets-expand)
-vmap <C-e> <Plug>(coc-snippets-select)
+vmap <C-j> <Plug>(coc-snippets-select)
 let g:coc_snippet_next = '<c-j>'
 let g:coc_snippet_prev = '<c-k>'
-imap <C-e> <Plug>(coc-snippets-expand-jump)
-let g:snips_author = 'David Chen'
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+let g:snips_author = 'qzy'
 autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
+
+function! s:generate_compile_commands()
+  if empty(glob('CMakeLists.txt'))
+    echo "Can't find CMakeLists.txt"
+    return
+  endif
+  if empty(glob('.vscode'))
+    execute 'silent !mkdir .vscode'
+  endif
+  execute '!cmake -DCMAKE_BUILD_TYPE=debug
+      \ -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S . -B .vscode'
+endfunction
+command! -nargs=0 Gcmake :call s:generate_compile_commands()
 
 
 " ===
@@ -649,7 +666,6 @@ let g:instant_markdown_autostart = 0
 " let g:instant_markdown_allow_external_content = 0
 " let g:instant_markdown_mathjax = 1
 let g:instant_markdown_autoscroll = 1
-
 
 " ===
 " === vim-table-mode
@@ -724,7 +740,6 @@ let g:Lf_UseCache = 0
 noremap L :UndotreeToggle<CR>
 let g:undotree_DiffAutoOpen = 1
 let g:undotree_SetFocusWhenToggle = 1
-let g:undotree_ShortIndicators = 1
 let g:undotree_WindowLayout = 2
 let g:undotree_DiffpanelHeight = 8
 let g:undotree_SplitWidth = 24
@@ -809,8 +824,46 @@ let g:coc_sources_disable_map = { 'cs': ['cs', 'cs-1', 'cs-2', 'cs-3'] }
 " ===
 " === tabular
 " ===
-" vmap ga :Tabularize /
+vmap ga :Tabularize /
 
+" ===
+" === rainbow
+" ===
+let g:rainbow_active = 1
+let g:rainbow_conf={
+		\	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+		\	'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+		\	'operators': '_,_',
+		\	'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+		\	'separately': {
+		\		'*': {},
+		\		'tex': {
+		\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+		\		},
+		\		'lisp': {
+		\			'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+		\		},
+		\		'vim': {
+		\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+		\		},
+		\		'html': {
+		\			'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+		\		},
+		\		'css': 0,
+		\	}
+		\}
+
+
+" ===
+" === xtabline
+" ===
+let g:xtabline_settings = {}
+let g:xtabline_settings.enable_mappings = 0
+let g:xtabline_settings.tabline_modes = ['tabs', 'buffers']
+let g:xtabline_settings.enable_persistance = 0
+let g:xtabline_settings.last_open_first = 1
+noremap to :XTabCycleMode<CR>
+noremap \p :echo expand('%:p')<CR>
 
 " ===
 " === vim-after-object
@@ -851,6 +904,18 @@ let g:rnvimr_layout = { 'relative': 'editor',
             \ 'row': 0,
             \ 'style': 'minimal' }
 let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
+
+" ===
+" === tcomment_vim
+" ===
+let g:tcomment_textobject_inlinecomment = ''
+nmap <LEADER>ch g>c
+vmap <LEADER>ch g>
+nmap <LEADER>cu g<c
+vmap <LEADER>cu g<
+nmap <LEADER>cb g>b
+imap <LEADER>ch <ESC>g>ci
+imap <LEADER>cu <ESC>g<i
 
 
 " ===
@@ -896,7 +961,7 @@ let g:agit_no_default_mappings = 1
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   -- one of "all", "language", or a list of languages
-  ensure_installed = {"cpp", "cmake", "typescript", "dart", "java", "c", "prisma", "bash"},
+  ensure_installed = {"cpp", "cmake", "comment", "typescript", "dart", "java", "c", "prisma", "bash"},
   highlight = {
     enable = true,              -- false will disable the whole extension
     disable = { "rust" },  -- list of language that will be disabled
