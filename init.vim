@@ -41,6 +41,8 @@ set noexpandtab
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
+autocmd FileType cpp set tabstop=4
+autocmd FileType cpp set shiftwidth=4
 set autoindent
 set list
 set listchars=tab:\|\ ,trail:▫
@@ -221,7 +223,7 @@ noremap <LEADER><left> :vertical resize-5<CR>
 noremap <LEADER><right> :vertical resize+5<CR>
 
 " Place the two screens up and down
-noremap sk <C-w>t<C-w>K
+noremap su <C-w>t<C-w>K
 " Place the two screens side by side
 noremap sv <C-w>t<C-w>H
 
@@ -239,11 +241,11 @@ noremap <LEADER>q <C-w>j:q<CR>
 noremap tu :tabe<CR>
 noremap tU :tab split<CR>
 " Move around tabs with tn and ti
-noremap th :-tabnext<CR>
-noremap tl :+tabnext<CR>
+noremap tj :-tabnext<CR>
+noremap tk :+tabnext<CR>
 " Move the tabs with tmn and tmi
-noremap tmh :-tabmove<CR>
-noremap tml :+tabmove<CR>
+noremap tmj :-tabmove<CR>
+noremap tmk :+tabmove<CR>
 
 
 " ===
@@ -262,7 +264,7 @@ autocmd BufRead,BufNewFile *.md setlocal spell
 nnoremap \t :tabe<CR>:-tabmove<CR>:term sh -c 'st'<CR><C-\><C-N>:q<CR>
 
 " Opening a terminal window
-noremap <LEADER>/ :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
+noremap <LEADER>/ :set splitright<CR>:vsplit<CR>:vertical resize +10<CR>:term<CR>
 
 " Press space twice to jump to the next '<++>' and edit it
 noremap <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
@@ -458,7 +460,8 @@ Plug 'Yggdroot/indentLine'
 Plug 'brooth/far.vim', { 'on': ['F', 'Far', 'Fardo'] }
 
 " Mini Vim-APP
-Plug 'mhinz/vim-startify'
+" Plug 'mhinz/vim-startify'
+Plug 'mhinz/vim-startify', {'branch': 'center'} 
 
 " Vim Applications
 Plug 'itchyny/calendar.vim'
@@ -595,9 +598,11 @@ function! Show_documentation()
 endfunction
 nnoremap <LEADER>sd :call Show_documentation()<CR>
 
+" diagnostic info
 nnoremap <silent><nowait> <LEADER>d :CocList diagnostics<cr>
 nmap <silent> <LEADER>- <Plug>(coc-diagnostic-prev)
 nmap <silent> <LEADER>= <Plug>(coc-diagnostic-next)
+nmap <LEADER>fx <Plug>(coc-fix-current)
 nnoremap <c-c> :CocCommand<CR>
 " Text Objects
 xmap if <Plug>(coc-funcobj-i)
@@ -647,11 +652,11 @@ function! s:generate_compile_commands()
     echo "Can't find CMakeLists.txt"
     return
   endif
-  if empty(glob('.vscode'))
-    execute 'silent !mkdir .vscode'
+  if empty(glob('build'))
+    execute 'silent !mkdir build'
   endif
-  execute '!cmake -DCMAKE_BUILD_TYPE=debug
-      \ -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S . -B .vscode'
+	execute '!cmake -DCMAKE_BUILD_TYPE=debug
+			\ -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S . -B build'
 endfunction
 command! -nargs=0 Gcmake :call s:generate_compile_commands()
 
@@ -826,6 +831,7 @@ let g:coc_sources_disable_map = { 'cs': ['cs', 'cs-1', 'cs-2', 'cs-3'] }
 " ===
 vmap ga :Tabularize /
 
+
 " ===
 " === rainbow
 " ===
@@ -864,6 +870,25 @@ let g:xtabline_settings.enable_persistance = 0
 let g:xtabline_settings.last_open_first = 1
 noremap to :XTabCycleMode<CR>
 noremap \p :echo expand('%:p')<CR>
+
+" ===
+" === vim-startify
+" ===
+let g:startify_files_number = 10
+let g:startify_custom_header =
+		 				\ 'startify#center(startify#fortune#cowsay())'
+let g:startify_lists = [
+         \ { 'type': 'files',     'header': startify#center(['   MRU'])            },
+         \ { 'type': 'dir',       'header': startify#center(['   MRU '. getcwd()]) ,'indices': ['c0', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9']},
+         \ { 'type': 'sessions',  'header': startify#center(['   Sessions'])       },
+         \ { 'type': 'bookmarks', 'header': startify#center(['   Bookmarks'])      },
+         \ { 'type': 'commands',  'header': startify#center(['   Commands'])       },
+         \ ]
+let g:startify_bookmarks = [
+            \ { 'n': '~/.config/nvim/init.vim' },
+            \ { 'z': '~/.zshrc'},
+            \ ]
+let g:startify_padding_left = 68 " Hard coded padding for lists
 
 " ===
 " === vim-after-object
@@ -914,8 +939,8 @@ vmap <LEADER>ch g>
 nmap <LEADER>cu g<c
 vmap <LEADER>cu g<
 nmap <LEADER>cb g>b
-imap <LEADER>ch <ESC>g>ci
-imap <LEADER>cu <ESC>g<i
+" imap <leader>ch <esc>g>ci
+" imap <leader>cu <esc>g<i
 
 
 " ===
@@ -943,7 +968,7 @@ let g:dartfmt_options = ["-l 100"]
 " ===
 " === any-jump
 " ===
-nnoremap j :AnyJump<CR>
+nnoremap aj :AnyJump<CR>
 let g:any_jump_window_width_ratio  = 0.8
 let g:any_jump_window_height_ratio = 0.9
 

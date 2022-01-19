@@ -107,16 +107,16 @@
 		">>": "gitUnstage"
 	},
 	"languageserver": {
-	  "ccls": {
-		"command": "ccls",
-		"filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
-		"rootPatterns": [".ccls", "compile_commands.json", ".git/", ".hg/", ".vscode", ".vim"],
-		"initializationOptions": {
-		  "cache": {
-			"directory": "/tmp/ccls"
-		  },
-		  "compilationDatabaseDirectory": ".vscode/"
-		}
+			"ccls": {
+			"command": "ccls",
+			"filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
+			"rootPatterns": [".ccls", "compile_commands.json", ".git/", ".hg/", ".vscode", ".vim"],
+			"initializationOptions": {
+				"cache": {
+				"directory": "/tmp/ccls"
+				},
+				"compilationDatabaseDirectory": "build/" 
+			}
 	  }
 	}
 }
