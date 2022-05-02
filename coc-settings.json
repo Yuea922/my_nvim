@@ -43,7 +43,7 @@
 		"UltiSnips",
 		"$HOME/.config/nvim/ultisnips/"
 	],
-
+  "coc.preferences.formatOnSaveFiletypes": ["json", "html", "python"],
   "explorer.width": 38,
   "explorer.quitOnOpen": true,
   "explorer.sources": [
@@ -106,18 +106,23 @@
 		"<<": "gitStage",
 		">>": "gitUnstage"
 	},
+	"python.analysis.typeCheckingMode": "off",
 	"languageserver": {
-			"ccls": {
-			"command": "ccls",
-			"filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
-			"rootPatterns": [".ccls", "compile_commands.json", ".git/", ".hg/", ".vscode", ".vim"],
-			"initializationOptions": {
-				"cache": {
-				"directory": "/tmp/ccls"
-				},
-				"compilationDatabaseDirectory": "build/" 
-			}
-	  }
+		// 	"ccls": {
+		// 	"command": "ccls",
+		// 	"filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
+		// 	"rootPatterns": [".ccls", "compile_commands.json", ".git/", ".build/", ".hg/", ".vscode", ".vim"],
+		// 	"initializationOptions": {
+		// 		"cache": {
+		// 		"directory": "/tmp/ccls"
+		// 		},
+		// 		// "clang": {
+		// 			// "extraArgs": ["-I", "/opt/ros/melodic/include"]
+		// 			// "resourceDir": "/home/qzy/.config/coc/extensions/coc-clangd-data/install/clangd_13.0.0/lib/clang/13.0.0"
+		// 		// },
+		// 		"compilationDatabaseDirectory": "build/" 
+		// 	}
+	  // }
 	}
 }
 

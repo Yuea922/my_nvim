@@ -364,7 +364,7 @@ endfunc
 call plug#begin('$HOME/.config/nvim/plugged')
 
 " Treesitter
-Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
 
 " Pretty Dress
@@ -433,7 +433,7 @@ Plug 'tweekmonster/braceless.vim', { 'for' :['python', 'vim-plug'] }
 Plug 'dart-lang/dart-vim-plugin'
 
 " Markdown
-Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle', 'for': ['text', 'markdown', 'vim-plug'] }
 Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] }
 Plug 'dkarter/bullets.vim'
@@ -554,6 +554,7 @@ nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 " === coc.nvim
 " ===
 let g:coc_global_extensions = [
+	\ 'coc-clangd',
 	\ 'coc-cmake',
 	\ 'coc-css',
 	\ 'coc-diagnostic',
@@ -674,10 +675,10 @@ command! -nargs=0 Gcmake :call s:generate_compile_commands()
 " ===
 let g:instant_markdown_slow = 0
 let g:instant_markdown_autostart = 0
-" let g:instant_markdown_open_to_the_world = 1
-" let g:instant_markdown_allow_unsafe_content = 1
-" let g:instant_markdown_allow_external_contenit = 0
-" let g:instant_markdown_mathjax = 1
+let g:instant_markdown_open_to_the_world = 1
+let g:instant_markdown_allow_unsafe_content = 1
+let g:instant_markdown_allow_external_contenit = 1
+let g:instant_markdown_mathjax = 1
 let g:instant_markdown_autoscroll = 1
 
 " ===
