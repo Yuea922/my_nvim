@@ -304,6 +304,11 @@ function! SynGroup()
 endfun
 map <F10> :call SynGroup()<CR>
 
+
+" shared paste
+vnoremap <leader>y :w! ~/.config/nvim/shared_pasteboard.vim<CR>
+noremap <leader>p :r! cat ~/.config/nvim/shared_pasteboard.vim<CR>
+
 " Compile function
 noremap r :call CompileRunGcc()<CR>
 func! CompileRunGcc()

@@ -1,5 +1,5 @@
 snippet cm "Comment Section"
-/* 
+/** 
  * ${0} 
  */
 endsnippet
@@ -26,31 +26,36 @@ snippet define "function define"
 endsnippet
 
 snippet fi "for loop by indexes" 
-for (size_t ${1:start} = 0; ${1:start} < ${2:end}; ++${1:start}) {
+for (int ${1:start} = 0; ${1:start} < ${2:end}; ++${1:start}) 
+{
 	${0:${VISUAL}}
 }
 endsnippet
 
 snippet fr "for loop by range"
-for (auto& ${1} : ${2:range}) {
+for (auto& ${1} : ${2:range}) 
+{
 	${0:${VISUAL}}
 }
 endsnippet
 
 snippet if "if"
-if (${1:condition}) {
+if (${1:condition})
+{
 	${0:${VISUAL}}
 }	
 endsnippet
 
 snippet elseif "elseif"
-else if (${1:condition}) {
+else if (${1:condition}) 
+{
 	${0:${VISUAL}}
 }
 endsnippet
 
 snippet else "else"
-else {
+else 
+{
 	${0:${VISUAL}}
 }
 endsnippet
