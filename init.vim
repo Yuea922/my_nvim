@@ -5,6 +5,15 @@
 " |_|  |_| |_|   |_| \_|  \_/  |___|_|  |_|
 
 " ===
+" === Auto load for first time uses
+" ===
+if empty(glob('~\AppData\Local\nvim\autoload\plug.vim'))
+	silent !curl -fLo ~\AppData\Local\nvim\autoload\plug.vim --create-dirs
+				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" ===
 " === Create a _machine_specific.vim file to adjust machine specific stuff, like python interpreter location
 " ===
 let has_machine_specific_file = 1
@@ -65,8 +74,8 @@ set completeopt=longest,noinsert,menuone,noselect,preview
 set ttyfast "should make scrolling faster
 set lazyredraw "same as above
 set visualbell
-silent !mkdir ~\AppData\Local\nvim\tmp\backup
-silent !mkdir ~\AppData\Local\nvim\tmp\undo
+silent !mkdir C:\Users\NEWNEU\AppData\Local\nvim\tmp\backup
+silent !mkdir C:\Users\NEWNEU\AppData\Local\nvim\tmp\undo
 "silent !mkdir -p ~/.config/nvim/tmp/sessions
 set backupdir=~\AppData\Local\nvim\tmp\backup,.
 set directory=~\AppData\Local\nvim\tmp\backup,.
@@ -1003,4 +1012,4 @@ exec "nohlsearch"
 " Open the _machine_specific.vim file if it has just been created
 if has_machine_specific_file == 0
 	exec "e ~\AppData\Local\nvim\_machine_specific.vim"
-endif
+end

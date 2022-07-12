@@ -1,2 +1,2 @@
 # my_nvim
-neovim config
+neovim config on windows
