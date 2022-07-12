@@ -588,8 +588,7 @@ let g:coc_global_extensions = [
 	\ 'coc-tsserver',
 	\ 'coc-vetur',
 	\ 'coc-vimlsp',
-	\ 'coc-yaml',
-	\ 'https://github.com/rodrigore/coc-tailwind-intellisense']
+	\ 'coc-yaml']
 inoremap <silent><expr> <TAB>
 	\ pumvisible() ? "\<C-n>" :
 	\ <SID>check_back_space() ? "\<TAB>" :
